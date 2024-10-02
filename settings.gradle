@@ -1,0 +1,6 @@
+rootProject.name = "BigChatBrasil"
+
+include("backend")
+include("frontend")
+include 'gateway'
+

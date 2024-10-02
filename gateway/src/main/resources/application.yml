@@ -1,0 +1,9 @@
+gateway:
+  port: 7000
+spring:
+  cloud:
+    config:
+      gateway:
+        git:
+          uri:
+            search-paths:

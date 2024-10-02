@@ -9,29 +9,6 @@ server:
       worker: 64 # Generally this should be reasonably high, at least 10 per CPU core: https://undertow.io/undertow-docs/undertow-docs-2.1.0/index.html#listeners-2
       io: 4 # One IO thread per CPU core is a reasonable default: https://undertow.io/undertow-docs/undertow-docs-2.1.0/index.html#listeners-2
 
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/bigchatbrasil
-    username: user
-    password: password
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      auto-commit: false
-      connection-timeout: 250
-      max-lifetime: 600000
-      maximum-pool-size: 20
-      minimum-idle: 10
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwt-set-uri: http://localhost:8443/realms/BCB/protocol/openid-connect/certs
-          issuer-uri: http://localhost:8443/realms/BCB
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
   eureka:
     client:
       fetch-register: true

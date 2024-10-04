@@ -1,8 +1,12 @@
 package br.com.bigchatbrasil.controllers;
 
-import br.com.bigchatbrasil.enums.Plano;
+import br.com.bigchatbrasil.dtos.AdicionarCreditosRequestDTO;
+import br.com.bigchatbrasil.dtos.AlterarLimiteRequestDTO;
+import br.com.bigchatbrasil.dtos.AlterarPlanoRequestDTO;
+import br.com.bigchatbrasil.dtos.ClienteResponseDTO;
 import br.com.bigchatbrasil.models.Cliente;
 import br.com.bigchatbrasil.services.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +30,7 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long id) {
-        return clienteService.buscarClientePorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(clienteService.buscarClientePorId(id));
     }
 
     @GetMapping
@@ -37,18 +39,24 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}/limite")
-    public ResponseEntity<Cliente> alterarLimite(@PathVariable Long id, @RequestParam BigDecimal novoLimite) {
-        return ResponseEntity.ok(clienteService.alterarLimite(id, novoLimite));
+    public ResponseEntity<Cliente> alterarLimite(@Valid @RequestBody AlterarLimiteRequestDTO dto) {
+        return ResponseEntity.ok(clienteService.alterarLimite(dto));
     }
 
     @PutMapping("/{id}/plano")
-    public ResponseEntity<Cliente> alterarPlano(@PathVariable Long id, @RequestParam Plano plano) {
-        return ResponseEntity.ok(clienteService.alterarPlano(id, plano));
+    public ResponseEntity<ClienteResponseDTO> alterarPlano(@Valid @RequestBody AlterarPlanoRequestDTO requestDTO) {
+
+        Cliente clienteAtualizado = clienteService.alterarPlano(requestDTO);
+        ClienteResponseDTO responseDTO = new ClienteResponseDTO(clienteAtualizado);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PutMapping("/{id}/creditos")
-    public ResponseEntity<Cliente> incluirCreditos(@PathVariable Long id, @RequestParam BigDecimal creditos) {
-        return ResponseEntity.ok(clienteService.incluirCreditos(id, creditos));
+    public ResponseEntity<ClienteResponseDTO> adicionarCreditos(@Valid @RequestBody AdicionarCreditosRequestDTO dto) {
+
+        Cliente clienteAtualizado = clienteService.adicionarCreditos(dto);
+        ClienteResponseDTO responseDTO = new ClienteResponseDTO(clienteAtualizado);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/{id}/saldo")

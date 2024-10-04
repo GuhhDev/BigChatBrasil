@@ -1,8 +1,12 @@
-FROM eclipse-temurin:17.0.5_8-jre-alpine
+# Etapa 1: Build da aplicação
+FROM gradle:7.5.1-jdk17 AS build
+WORKDIR /app
+COPY --chown=gradle:gradle . .
+RUN gradle build -x test --no-daemon
 
-COPY build/libs/*.jar /opt/app/application.jar
-
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
-
-CMD java -jar /opt/app/application.jar
+# Etapa 2: Runtime da aplicação
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/build/libs/*.jar /app/app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

@@ -1,0 +1,21 @@
+{
+  "realm": "BCB",
+  "enabled": true,
+  "users": [
+    {
+      "username": "user",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "123",
+          "temporary": false
+        }
+      ],
+      "firstName": "Usuario",
+      "lastName": "Padrao",
+      "email": "teste@teste.com"
+    }
+  ]
+}
+
